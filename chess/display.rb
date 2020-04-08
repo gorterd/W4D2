@@ -1,5 +1,5 @@
 require "colorize"
-require_relative "new_board"
+require_relative "board"
 require_relative "cursor"
 
 class Display
