@@ -1,4 +1,10 @@
+require "byebug"
+
 module Slideable
+
+    # THIS IS SCREWING UP MAJORLY
+    # FIX!!
+
     def horizontal_dirs
         possible_moves = []
         HORIZONTAL_DIRS.each do |dx, dy|
@@ -51,12 +57,21 @@ module Slideable
         start_x, start_y = position
         current_pos = [start_x + dx, start_y + dy]
         while board.valid_pos?(current_pos) && board[current_pos].is_a?(NullPiece)
+            # debugger
             new_moves << current_pos
-            current_pos[0] += dx 
-            current_pos[1] += dy 
+            new_x = current_pos[0] + dx 
+            new_y = current_pos[1] + dy 
+            current_pos = [new_x, new_y]
         end 
 
+        # debugger
+        if board.valid_pos?(current_pos) && color != board[current_pos].color
+            new_moves << current_pos
+        end
+
+        # debugger
         new_moves
+        # debugger
     end 
 
 end 
@@ -64,10 +79,22 @@ end
 module Stepable
     def moves 
         possible_moves = []
-        if move_diffs 
+        start_x, start_y = position
+
+        move_diffs.each do |diff|
+            dx, dy = diff
+            current_pos = [start_x + dx, start_y + dy]
+            if board.valid_pos?(current_pos) && color != board[current_pos].color 
+                possible_moves << current_pos
+            end
+        end
+
+        possible_moves
     end 
 
     private 
     def move_diffs 
+        #each subclass overwrites
     end 
 end 
+
